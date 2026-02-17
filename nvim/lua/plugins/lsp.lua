@@ -48,7 +48,7 @@ return {
       -- other plugins before putting this into your config
       function _G.coc_copilot_tab()
         if vim.fn["coc#pum#visible"]() == 1 then
-          return vim.fn["coc#pum#next"](1) .. vim.fn["coc#pum#confirm"]()
+          return vim.fn["coc#pum#confirm"]()
         end
 
         local suggestion = vim.fn["copilot#Accept"]("")
