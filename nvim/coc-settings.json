@@ -1,0 +1,16 @@
+{
+  "diagnostic.virtualText": true,
+  "diagnostic.virtualTextCurrentLineOnly": false,
+
+  "coc.preferences.formatOnSave": true,
+
+  "prettier.requireConfig": false,
+
+  "eslint.autoFixOnSave": true,
+
+  "typescript.suggest.autoImports": true,
+  "javascript.suggest.autoImports": true,
+  "editor.codeActionsOnSave": {
+    "source.fixAll.eslint": true
+  }
+}
