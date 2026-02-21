@@ -7,6 +7,9 @@
     "main_pane_min_width": 120,
     "agent_pane_min_width": 40
   },
+  "sisyphus_agent": {
+    "default_builder_enabled": true
+  },
   "agents": {
     "sisyphus": {
       "model": "github-copilot/gpt-5.2-codex",
