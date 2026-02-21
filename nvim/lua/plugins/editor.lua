@@ -3,15 +3,21 @@ return {
   {
     "nvim-telescope/telescope.nvim",
     branch = "master",
-    dependencies = { "nvim-lua/plenary.nvim" },
-    keys = {
-      { "<leader>sf", "<cmd>Telescope find_files<cr>", desc = "Find files" },
-      { "<leader>rg", "<cmd>Telescope live_grep<cr>", desc = "Live grep" },
-      { "<leader>fz", "<cmd>Telescope live_grep<cr>", desc = "Live grep (alias)" },
-      { "<leader><leader>", "<cmd>Telescope commands<cr>", desc = "Commands" },
+    version = '*',
+    dependencies = {
+      'nvim-lua/plenary.nvim',
+      { 'nvim-telescope/telescope-fzf-native.nvim', build = 'make' },
     },
     opts = function()
+      local builtin = require('telescope.builtin')
+      vim.keymap.set('n', '<leader><leader>', builtin.commands, { desc = 'Telescope commands' })
+      vim.keymap.set('n', '<leader>ff', builtin.find_files, { desc = 'Telescope find files' })
+      vim.keymap.set('n', '<leader>fg', builtin.live_grep, { desc = 'Telescope live grep' })
+      vim.keymap.set('n', '<leader>fb', builtin.buffers, { desc = 'Telescope buffers' })
+      vim.keymap.set('n', '<leader>fh', builtin.help_tags, { desc = 'Telescope help tags' })
+
       local actions = require("telescope.actions")
+
       return {
         defaults = {
           file_ignore_patterns = { ".git/", "node_modules/", "dist/", "vendor/" },
@@ -32,16 +38,6 @@ return {
         },
       }
     end,
-  },
-
-  -- Comment (replaces nerdcommenter)
-  {
-    "numToStr/Comment.nvim",
-    keys = {
-      { "//", "<Plug>(comment_toggle_linewise_current)", desc = "Toggle comment" },
-      { "//", "<Plug>(comment_toggle_linewise_visual)", mode = "v", desc = "Toggle comment" },
-    },
-    opts = {},
   },
 
   -- Input method switch (replaces smartim)

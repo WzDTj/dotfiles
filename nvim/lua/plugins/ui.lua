@@ -1,12 +1,29 @@
 return {
   -- Nord colorscheme
   {
-    "nordtheme/vim",
+    "gbprod/nord.nvim",
     lazy = false,
     priority = 1000,
     config = function()
+      require("nord").setup({})
       vim.cmd.colorscheme("nord")
     end,
+  },
+
+  -- Tab line
+  {
+    "akinsho/bufferline.nvim",
+    lazy = false,
+    version = "*",
+    dependencies = "nvim-tree/nvim-web-devicons",
+    config = function()
+      vim.opt.termguicolors = true
+      require("bufferline").setup {
+        options = {
+          diagnostics = "nvim_lsp",
+        },
+      }
+    end
   },
 
   -- Status line
@@ -30,7 +47,7 @@ return {
           { 'filename', path = 1 },
         },
         lualine_y = {
-          { "filetype", icon_only = true },
+          { "lsp_status" },
         },
         lualine_z = {
           { "location" },
