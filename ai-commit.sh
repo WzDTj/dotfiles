@@ -25,7 +25,7 @@ $DIFF
 # ====== 选择你的 AI CLI ======
 
 # opencode
-MSG=$(echo "$PROMPT" | opencode run --model github-copilot/gpt-5-mini)
+MSG=$(echo "$PROMPT" | opencode run --model github-copilot/gpt-5-mini --agent OpenCode-Builder)
 
 # 如果用 copilot-cli 替换上面一行：
 # MSG=$(echo "$PROMPT" | copilot suggest)
