@@ -1,12 +1,11 @@
 #!/usr/bin/env bash
 set -euo pipefail
 
-MODEL="${AI_COMMIT_MODEL:-github-copilot/gpt-5-mini}"
-AGENT="${AI_COMMIT_AGENT:-OpenCode-Builder}"
+MODEL="${AI_COMMIT_MODEL:-gpt-5.1-codex-mini}"
 DIFF_LIMIT="${AI_COMMIT_DIFF_LIMIT:-12000}"
 
-if ! command -v opencode >/dev/null 2>&1; then
-  echo "Error: 'opencode' command not found." >&2
+if ! command -v codex >/dev/null 2>&1; then
+  echo "Error: 'codex' command not found." >&2
   exit 1
 fi
 
@@ -45,10 +44,57 @@ $DIFF
 EOF
 }
 
+run_codex_with_loading() {
+  local prompt="$1"
+  local out_file="$2"
+  local err_file="$3"
+  local pid spinner index
+
+  spinner='|/-\\'
+  index=0
+
+  (
+    printf "%s" "$prompt" | codex exec --model "$MODEL" --sandbox read-only --output-last-message "$out_file" >/dev/null 2>"$err_file"
+  ) &
+  pid=$!
+
+  while kill -0 "$pid" >/dev/null 2>&1; do
+    printf "\rGenerating commit message... %s" "${spinner:index:1}" >&2
+    index=$(( (index + 1) % 4 ))
+    sleep 0.1
+  done
+
+  wait "$pid"
+  local status=$?
+
+  if [ "$status" -eq 0 ]; then
+    printf "\rGenerating commit message... done\n" >&2
+  else
+    printf "\rGenerating commit message... failed\n" >&2
+  fi
+
+  return "$status"
+}
+
 generate_message() {
-  local prompt raw
+  local prompt raw out_file err_file
   prompt="$(build_prompt)"
-  raw="$(printf "%s" "$prompt" | opencode run --model "$MODEL" --agent "$AGENT")"
+  out_file="$(mktemp)"
+  err_file="$(mktemp)"
+
+  if ! run_codex_with_loading "$prompt" "$out_file" "$err_file"; then
+    echo "Error: failed to generate commit message with model '$MODEL'." >&2
+    if [ -s "$err_file" ]; then
+      while IFS= read -r line; do
+        echo "$line" >&2
+      done < "$err_file"
+    fi
+    rm -f "$out_file" "$err_file"
+    return 1
+  fi
+
+  raw="$(<"$out_file")"
+  rm -f "$out_file" "$err_file"
   raw="${raw//$'\r'/}"
   raw="${raw#${raw%%[![:space:]]*}}"
   raw="${raw%%$'\n'*}"
