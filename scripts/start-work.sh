@@ -1,8 +1,12 @@
-#!/usr/bin/env bash
+#!/usr/bin/env zsh
 set -euo pipefail
 
 switch_branch_by_keyword() {
   local keyword="$1"
+  local normalized_keyword=""
+  local date_str=""
+  local default_branch_name=""
+  local input_branch_name=""
   local target_branch=""
   local base_ref=""
 
@@ -16,9 +20,26 @@ switch_branch_by_keyword() {
     fi
   fi
 
-  target_branch="$keyword"
-  if [[ "$target_branch" == *" "* ]]; then
-    target_branch="${target_branch// /-}"
+  normalized_keyword="${keyword// /-}"
+  date_str="$(date +%Y%m%d)"
+  default_branch_name="${normalized_keyword}_dantong.jin_${date_str}_"
+
+  if [[ -t 0 ]]; then
+    if whence -w vared >/dev/null 2>&1; then
+      input_branch_name="$default_branch_name"
+      vared -p "Branch name: " input_branch_name
+      target_branch="${input_branch_name:-$default_branch_name}"
+    else
+      read -r "input_branch_name?Branch name [${default_branch_name}]: "
+      target_branch="${input_branch_name:-$default_branch_name}"
+    fi
+  else
+    target_branch="$default_branch_name"
+  fi
+
+  if [[ -z "$target_branch" ]]; then
+    echo "Branch name cannot be empty."
+    return 1
   fi
 
   if git show-ref --verify --quiet refs/heads/main; then
@@ -32,6 +53,11 @@ switch_branch_by_keyword() {
   else
     echo "No base branch found. Expected one of: main/master/origin/main/origin/master"
     return 1
+  fi
+
+  if git show-ref --verify --quiet "refs/heads/${target_branch}"; then
+    git checkout "$target_branch"
+    return 0
   fi
 
   git checkout -b "$target_branch" "$base_ref"
