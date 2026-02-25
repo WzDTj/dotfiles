@@ -20,3 +20,5 @@ export PATH=$PATH:$HOME/.maestro/bin
 bindkey -s '^e' 'yazi\n'
 
 
+alias start-work='$HOME/WorkSpace/dotfiles/scripts/start-work.sh'
+alias stop-work='$HOME/WorkSpace/dotfiles/scripts/stop-work.sh'

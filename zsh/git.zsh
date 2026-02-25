@@ -2,4 +2,3 @@ git config --global alias.ck '!$HOME/WorkSpace/dotfiles/scripts/git-checkout-by-
 git config --global alias.pm '!$HOME/WorkSpace/dotfiles/scripts/git-push-merge.sh'
 git config --global alias.gcm '!$HOME/WorkSpace/dotfiles/scripts/git-generate-commit-message.sh'
 
-alias start-work='$HOME/WorkSpace/dotfiles/scripts/start-work.sh'
