@@ -39,16 +39,50 @@ return {
         pickers = {
           find_files = {
             hidden = true,
-            no_ignore = true,
           },
           live_grep = {
             additional_args = function()
-              return { "--hidden", "--no-ignore", "--glob", "!.git/*" }
+              return { "--hidden", "--glob", "!.git/*" }
             end,
           },
         },
       }
     end,
+  },
+
+  {
+    "stevearc/conform.nvim",
+    event = { "BufWritePre" },
+    opts = {
+      formatters_by_ft = {
+        -- Web/JavaScript ecosystem
+        javascript = { "prettier" },
+        typescript = { "prettier" },
+        javascriptreact = { "prettier" },
+        typescriptreact = { "prettier" },
+        vue = { "prettier" },
+        css = { "prettier" },
+        scss = { "prettier" },
+        less = { "prettier" },
+        html = { "prettier" },
+        json = { "prettier" },
+        jsonc = { "prettier" },
+        markdown = { "prettier" },
+        yaml = { "prettier" },
+
+        -- Lua
+        lua = { "stylua" },
+
+        -- Shell
+        sh = { "shfmt" },
+        bash = { "shfmt" },
+      },
+
+      format_on_save = {
+        timeout_ms = 500,
+        lsp_format = "fallback",
+      },
+    },
   },
 
   -- Input method switch (replaces smartim)
