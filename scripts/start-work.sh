@@ -1,6 +1,28 @@
 #!/usr/bin/env zsh
 set -euo pipefail
 
+# Find an available port starting from the given port
+find_available_port() {
+  local start_port="$1"
+  local port="$start_port"
+  
+  while true; do
+    # Check if port is available (no process listening)
+    if ! lsof -Pi ":$port" -sTCP:LISTEN -t >/dev/null 2>&1 && \
+       ! netstat -an 2>/dev/null | grep -q ".$port " && \
+       ! ss -tln 2>/dev/null | grep -q ":$port "; then
+      echo "$port"
+      return 0
+    fi
+    ((port++))
+    # Safety limit: don't search forever
+    if [[ $port -gt $((start_port + 100)) ]]; then
+      echo "Could not find available port in range $start_port-$port" >&2
+      return 1
+    fi
+  done
+}
+
 switch_branch_by_keyword() {
   local keyword="$1"
   local normalized_keyword=""
@@ -87,7 +109,10 @@ tmux split-window -v -t "${session_name}:1.2" -c "$PWD"
 tmux send-keys -t "${session_name}:1.1" "e" C-m
 tmux send-keys -t "${session_name}:1.2" "lazygit" C-m
 tmux new-window -t "${session_name}:2" -c "$PWD"
-tmux send-keys -t "${session_name}:2.1" "opencode --port 4096" C-m
+
+# Find available port for opencode (starting from 4096)
+opencode_port=$(find_available_port 4096)
+tmux send-keys -t "${session_name}:2.1" "opencode --port $opencode_port" C-m
 
 tmux select-window -t "${session_name}:1"
 tmux select-pane -t "${session_name}:1.1"
