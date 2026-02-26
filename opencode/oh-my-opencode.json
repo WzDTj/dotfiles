@@ -12,7 +12,7 @@
   },
   "agents": {
     "sisyphus": {
-      "model": "github-copilot/claude-opus-4.6",
+      "model": "bailian-coding-plan/kimi-k2.5",
       "variant": "max"
     },
     "hephaestus": {
@@ -33,11 +33,11 @@
       "model": "github-copilot/gemini-3-flash-preview"
     },
     "prometheus": {
-      "model": "github-copilot/claude-opus-4.6",
+      "model": "bailian-coding-plan/kimi-k2.5",
       "variant": "max"
     },
     "metis": {
-      "model": "github-copilot/claude-opus-4.6",
+      "model": "bailian-coding-plan/kimi-k2.5",
       "variant": "max"
     },
     "momus": {
