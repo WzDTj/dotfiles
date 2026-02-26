@@ -11,3 +11,4 @@ source ~/.config/zsh/pnpm.zsh
 source ~/.config/zsh/bun.zsh
 source ~/.config/zsh/antigravity.zsh
 
+source ~/.config/zsh/env.zsh
