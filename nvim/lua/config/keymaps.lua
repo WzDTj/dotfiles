@@ -21,3 +21,23 @@ map("n", "<leader>tc", "<cmd>tabclose<cr>", { desc = "Close tab" })
 
 -- Clear search highlight
 map("n", "<esc>", "<cmd>noh<cr><esc>", { desc = "Clear highlight" })
+
+-- LSP diagnostic
+vim.diagnostic.config({ virtual_text = false })
+map("n", "[d", vim.diagnostic.goto_prev)
+map("n", "]d", vim.diagnostic.goto_next)
+map("n", "<leader>d", vim.diagnostic.setloclist)
+
+-- LSP navigation
+map("n", "<leader>gd", vim.lsp.buf.definition)
+map("n", "<leader>gD", vim.lsp.buf.declaration)
+map("n", "<leader>gi", vim.lsp.buf.implementation)
+map("n", "<leader>gr", vim.lsp.buf.references)
+map("n", "<leader>gt", vim.lsp.buf.type_definition)
+
+-- lsp code actions
+map("n", "<leader>rn", vim.lsp.buf.rename)
+map("n", "<leader>ca", vim.lsp.buf.code_action)
+map("n", "<leader>o", vim.lsp.buf.outgoing_calls)
+map("n", "<leader>i", vim.lsp.buf.incoming_calls)
+ 
