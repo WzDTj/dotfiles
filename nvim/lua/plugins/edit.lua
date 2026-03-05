@@ -97,10 +97,30 @@ return {
         bash = { "shfmt" },
       },
 
-      format_on_save = {
-        timeout_ms = 500,
-        lsp_format = "fallback",
-      },
+      format_on_save = function(bufnr)
+        -- Organize imports via ts_ls before conform formats.
+        local client = vim.lsp.get_clients({ bufnr = bufnr, name = "ts_ls" })[1]
+        if client then
+          local params = {
+            textDocument = vim.lsp.util.make_text_document_params(bufnr),
+            range = {
+              start = { line = 0, character = 0 },
+              ["end"] = { line = vim.api.nvim_buf_line_count(bufnr), character = 0 },
+            },
+            context = { only = { "source.organizeImports" }, diagnostics = {} },
+          }
+          local result = client:request_sync("textDocument/codeAction", params, 1000, bufnr)
+          for _, action in ipairs((result and result.result) or {}) do
+            if action.edit then
+              vim.lsp.util.apply_workspace_edit(action.edit, client.offset_encoding)
+            elseif action.command then
+              client:exec_cmd(action.command)
+            end
+          end
+        end
+
+        return { timeout_ms = 500, lsp_format = "fallback" }
+      end,
     },
   },
 }
