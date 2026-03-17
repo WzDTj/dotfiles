@@ -1,7 +1,15 @@
 export EDITOR=nvim
 alias e=$EDITOR
 
-export FILE_MANAGER=yazi
+# Yazi
+function y() {
+	local tmp="$(mktemp -t "yazi-cwd.XXXXXX")" cwd
+	command yazi "$@" --cwd-file="$tmp"
+	IFS= read -r -d '' cwd < "$tmp"
+	[ "$cwd" != "$PWD" ] && [ -d "$cwd" ] && builtin cd -- "$cwd"
+	rm -f -- "$tmp"
+}
+export FILE_MANAGER=y
 alias fm=$FILE_MANAGER
 
 # FZF
@@ -17,7 +25,7 @@ export NO_PROXY=localhost,127.0.0.1
 export PATH=$PATH:$HOME/.maestro/bin
 
 # map <C-e> to open the current directory in yazi
-bindkey -s '^e' 'yazi\n'
+bindkey -s '^e' '$FILE_MANAGER\n'
 
 
 alias start-work='$HOME/WorkSpace/dotfiles/scripts/start-work.sh'
