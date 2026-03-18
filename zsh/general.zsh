@@ -30,3 +30,7 @@ bindkey -s '^e' '$FILE_MANAGER\n'
 
 alias start-work='$HOME/WorkSpace/dotfiles/scripts/start-work.sh'
 alias stop-work='$HOME/WorkSpace/dotfiles/scripts/stop-work.sh'
+
+if command -v zoxide >/dev/null 2>&1; then
+  eval "$(zoxide init zsh)"
+fi
