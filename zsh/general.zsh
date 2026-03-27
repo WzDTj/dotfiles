@@ -31,6 +31,39 @@ bindkey -s '^e' '$FILE_MANAGER\n'
 alias start-work='$HOME/WorkSpace/dotfiles/scripts/start-work.sh'
 alias stop-work='$HOME/WorkSpace/dotfiles/scripts/stop-work.sh'
 
+start_work_update_title() {
+  local dir branch title tmux_session
+  dir="${PWD##*/}"
+
+  if git rev-parse --is-inside-work-tree >/dev/null 2>&1; then
+    branch="$(git symbolic-ref --quiet --short HEAD 2>/dev/null || true)"
+  else
+    branch=""
+  fi
+
+  title="$dir"
+  [[ -n $branch ]] && title="$dir: $branch"
+
+  if [[ -n ${TMUX:-} ]]; then
+    if command -v tmux >/dev/null 2>&1; then
+      tmux_session="$(tmux display-message -p '#S' 2>/dev/null || true)"
+      if [[ -n "$tmux_session" ]]; then
+        tmux set-option -t "$tmux_session" set-titles-string "$title" 2>/dev/null || true
+      fi
+    fi
+    printf '\ePtmux;\e\e]0;%s\a\e\\' "$title"
+  else
+    printf '\e]0;%s\a' "$title"
+  fi
+}
+
+if [[ -n ${START_WORK_TITLE:-} ]]; then
+  autoload -Uz add-zsh-hook
+  (( ${+functions[omz_termsupport_preexec]} )) && add-zsh-hook -d preexec omz_termsupport_preexec
+  (( ${+functions[omz_termsupport_precmd]} )) && add-zsh-hook -d precmd omz_termsupport_precmd
+  (( ${precmd_functions[(I)start_work_update_title]:-0} == 0 )) && add-zsh-hook precmd start_work_update_title
+fi
+
 if command -v zoxide >/dev/null 2>&1; then
   eval "$(zoxide init zsh)"
 fi
