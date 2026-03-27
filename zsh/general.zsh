@@ -49,8 +49,8 @@ start_work_update_title() {
 
 if [[ -n ${START_WORK_TITLE:-} ]]; then
   autoload -Uz add-zsh-hook
-  (( ${precmd_functions[(I)start_work_update_title]} == 0 )) && add-zsh-hook precmd start_work_update_title
-  (( ${chpwd_functions[(I)start_work_update_title]} == 0 )) && add-zsh-hook chpwd start_work_update_title
+  (( ${precmd_functions[(I)start_work_update_title]:-0} == 0 )) && add-zsh-hook precmd start_work_update_title
+  (( ${chpwd_functions[(I)start_work_update_title]:-0} == 0 )) && add-zsh-hook chpwd start_work_update_title
   start_work_update_title
 fi
 
