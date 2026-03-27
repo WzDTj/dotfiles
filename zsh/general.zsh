@@ -31,6 +31,29 @@ bindkey -s '^e' '$FILE_MANAGER\n'
 alias start-work='$HOME/WorkSpace/dotfiles/scripts/start-work.sh'
 alias stop-work='$HOME/WorkSpace/dotfiles/scripts/stop-work.sh'
 
+start_work_update_title() {
+  local dir branch title
+  dir="${PWD##*/}"
+
+  if git rev-parse --is-inside-work-tree >/dev/null 2>&1; then
+    branch="$(git symbolic-ref --quiet --short HEAD 2>/dev/null || git describe --tags --exact-match 2>/dev/null || git rev-parse --short HEAD 2>/dev/null)"
+  else
+    branch=""
+  fi
+
+  title="$dir"
+  [[ -n $branch ]] && title="$dir | $branch"
+
+  print -Pn "\e]0;${title}\a"
+}
+
+if [[ -n ${START_WORK_TITLE:-} ]]; then
+  autoload -Uz add-zsh-hook
+  (( ${precmd_functions[(I)start_work_update_title]} == 0 )) && add-zsh-hook precmd start_work_update_title
+  (( ${chpwd_functions[(I)start_work_update_title]} == 0 )) && add-zsh-hook chpwd start_work_update_title
+  start_work_update_title
+fi
+
 if command -v zoxide >/dev/null 2>&1; then
   eval "$(zoxide init zsh)"
 fi

@@ -12,6 +12,9 @@ typeset -A tmux_layout_bindings=(
 
 tmux_layout_script="${tmux_layout_bindings[$current_dir]:-$script_dir/tmux-layout.sh}"
 
+export START_WORK_TITLE=1
+tmux set-environment -g START_WORK_TITLE 1 2>/dev/null || true
+
 if [[ $# -gt 0 ]]; then
   "$script_dir/git-checkout-or-create.sh" "$*"
 fi
