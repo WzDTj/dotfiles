@@ -21,22 +21,18 @@ find_available_port() {
 }
 
 session_name="$(basename "$PWD")"
+branch="$(git -C "$PWD" symbolic-ref --quiet --short HEAD 2>/dev/null || true)"
 title="$session_name"
-if git -C "$PWD" rev-parse --is-inside-work-tree >/dev/null 2>&1; then
-  branch="$(git -C "$PWD" symbolic-ref --quiet --short HEAD 2>/dev/null || true)"
-  [[ -n "$branch" ]] && title="$session_name: $branch"
-fi
+[[ -n "$branch" ]] && title="$session_name: $branch"
 
 if tmux has-session -t "$session_name" 2>/dev/null; then
-  tmux set-option -t "$session_name" set-titles on 2>/dev/null || true
-  tmux set-option -t "$session_name" set-titles-string "$title" 2>/dev/null || true
-  tmux attach-session -t "$session_name"
-  exit 0
+  :
+else
+  opencode_port="$(find_available_port 4096)"
+  tmux new-session -d -s "$session_name" -c "$PWD" -x "$(tput cols)" -y "$(tput lines)"
+  tmux new-window -d -c "$PWD" "opencode --port $opencode_port"
 fi
 
-opencode_port="$(find_available_port 4096)"
-tmux new-session -d -s "$session_name" -c "$PWD" -x "$(tput cols)" -y "$(tput lines)"
 tmux set-option -t "$session_name" set-titles on 2>/dev/null || true
 tmux set-option -t "$session_name" set-titles-string "$title" 2>/dev/null || true
-tmux new-window -d -c "$PWD" "opencode --port $opencode_port"
 tmux attach-session -t "$session_name"

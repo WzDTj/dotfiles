@@ -48,33 +48,20 @@ start_work_update_title() {
     if command -v tmux >/dev/null 2>&1; then
       tmux_session="$(tmux display-message -p '#S' 2>/dev/null || true)"
       if [[ -n "$tmux_session" ]]; then
-        tmux set-option -t "$tmux_session" set-titles on 2>/dev/null || true
         tmux set-option -t "$tmux_session" set-titles-string "$title" 2>/dev/null || true
       fi
     fi
-    # Pass OSC through tmux so outer terminal tab title updates correctly.
     printf '\ePtmux;\e\e]0;%s\a\e\\' "$title"
   else
     printf '\e]0;%s\a' "$title"
   fi
 }
 
-if [[ -z ${START_WORK_TITLE:-} && -n ${TMUX:-} ]] && command -v tmux >/dev/null 2>&1; then
-  typeset tmux_start_work_title
-  tmux_start_work_title="$(tmux show-environment -g START_WORK_TITLE 2>/dev/null || true)"
-  if [[ "$tmux_start_work_title" == START_WORK_TITLE=* ]]; then
-    export START_WORK_TITLE="${tmux_start_work_title#START_WORK_TITLE=}"
-  fi
-fi
-
 if [[ -n ${START_WORK_TITLE:-} ]]; then
   autoload -Uz add-zsh-hook
-  # Keep tab title as current directory during start-work sessions.
   (( ${+functions[omz_termsupport_preexec]} )) && add-zsh-hook -d preexec omz_termsupport_preexec
   (( ${+functions[omz_termsupport_precmd]} )) && add-zsh-hook -d precmd omz_termsupport_precmd
   (( ${precmd_functions[(I)start_work_update_title]:-0} == 0 )) && add-zsh-hook precmd start_work_update_title
-  (( ${chpwd_functions[(I)start_work_update_title]:-0} == 0 )) && add-zsh-hook chpwd start_work_update_title
-  start_work_update_title
 fi
 
 if command -v zoxide >/dev/null 2>&1; then
