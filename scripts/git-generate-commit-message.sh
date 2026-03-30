@@ -1,7 +1,7 @@
 #!/usr/bin/env bash
 set -euo pipefail
 
-MODEL="${AI_COMMIT_MODEL:-gpt-5.1-codex-mini}"
+MODEL="${AI_COMMIT_MODEL:-gpt-5.4-mini}"
 DIFF_LIMIT="${AI_COMMIT_DIFF_LIMIT:-12000}"
 
 if ! command -v codex >/dev/null 2>&1; then
