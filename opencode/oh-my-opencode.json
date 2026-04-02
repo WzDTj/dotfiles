@@ -38,7 +38,7 @@
     },
 
     "multimodal-looker": {
-      "model": "github-copilot/gemini-3.1-pro",
+      "model": "github-copilot/gemini-3.1-pro-preview",
       "variant": "high"
     },
     "metis": {
