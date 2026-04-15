@@ -110,7 +110,7 @@
     "agent_pane_min_width": 40
   },
   "sisyphus_agent": {
-    "default_builder_enabled": true,
+    "default_builder_enabled": false,
     "planner_enabled": true,
     "replace_plan": true
   },
