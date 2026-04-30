@@ -2,7 +2,7 @@
   "$schema": "https://raw.githubusercontent.com/code-yeongyu/oh-my-opencode/dev/assets/oh-my-opencode.schema.json",
   "agents": {
     "sisyphus": {
-      "model": "openai/gpt-5.4",
+      "model": "openai/gpt-5.5",
       "variant": "max",
       "ultrawork": {
         "model": "openai/gpt-5.4",
@@ -11,12 +11,12 @@
       "prompt_append": "Always consult prometheus and atlas for planning. Never rush to implementation."
     },
     "hephaestus": {
-      "model": "openai/gpt-5.4",
+      "model": "openai/gpt-5.5",
       "variant": "medium",
       "prompt_append": "Follow established plans precisely. Ask for clarification when plans are ambiguous."
     },
     "oracle": {
-      "model": "openai/gpt-5.4",
+      "model": "openai/gpt-5.5",
       "variant": "xhigh",
       "thinking": {
         "type": "enabled",
@@ -31,7 +31,7 @@
       "variant": "high"
     },
     "prometheus": {
-      "model": "openai/gpt-5.4",
+      "model": "openai/gpt-5.5",
       "variant": "high",
       "thinking": {
         "type": "enabled",
@@ -40,7 +40,7 @@
       "prompt_append": "Interview extensively. Question assumptions. Build exhaustive plans with milestones, risks, and contingencies. Use deep & quick agents heavily in parallel for research."
     },
     "metis": {
-      "model": "openai/gpt-5.4",
+      "model": "openai/gpt-5.5",
       "variant": "high",
       "prompt_append": "Critically evaluate plans. Identify gaps, risks, and improvements. Be thorough."
     },
@@ -66,11 +66,11 @@
       "variant": "high"
     },
     "ultrabrain": {
-      "model": "openai/gpt-5.4",
+      "model": "openai/gpt-5.5",
       "variant": "xhigh"
     },
     "deep": {
-      "model": "openai/gpt-5.4",
+      "model": "openai/gpt-5.5",
       "variant": "medium"
     },
     "artistry": {
@@ -84,7 +84,7 @@
       "model": "github-copilot/claude-sonnet-4.6"
     },
     "unspecified-high": {
-      "model": "openai/gpt-5.4",
+      "model": "openai/gpt-5.5",
       "variant": "xhigh"
     },
     "writing": {
@@ -117,6 +117,5 @@
   "hashline_edit": true,
   "experimental": {
     "aggressive_truncation": true
-  },
-  "_migrations": ["model-version:openai/gpt-5.3-codex->openai/gpt-5.4"]
+  }
 }
