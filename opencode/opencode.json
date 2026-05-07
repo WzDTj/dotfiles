@@ -1,6 +1,6 @@
 {
   "$schema": "https://opencode.ai/config.json",
-  "plugin": ["oh-my-openagent@3.17.6"],
+  "plugin": ["oh-my-openagent@3.17.15"],
   "provider": {},
   "mcp": {
     "sentry": {
