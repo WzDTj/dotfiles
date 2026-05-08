@@ -46,22 +46,14 @@
       }
     },
     "librarian": {
-      "model": "openai/gpt-5.4-mini-fast"
+      "model": "openai/gpt-5.4-mini"
     },
     "explore": {
-      "model": "openai/gpt-5.4-mini-fast"
+      "model": "openai/gpt-5.4-mini"
     },
     "multimodal-looker": {
       "model": "openai/gpt-5.5",
-      "variant": "medium",
-      "fallback_models": [
-        {
-          "model": "openai/gpt-5-nano"
-        },
-        {
-          "model": "github-copilot/gpt-5-nano"
-        }
-      ]
+      "variant": "medium"
     },
     "prometheus": {
       "model": "openai/gpt-5.5",
@@ -240,6 +232,9 @@
     "default_builder_enabled": true,
     "planner_enabled": true,
     "replace_plan": true
+  },
+  "team_mode": {
+    "enabled": true
   },
   "hashline_edit": true,
   "experimental": {
