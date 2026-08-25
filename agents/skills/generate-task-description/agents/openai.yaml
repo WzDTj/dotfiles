@@ -1,0 +1,6 @@
+interface:
+  display_name: "Generate Task Description"
+  short_description: "Generate a Chinese Jira description from linked PR diffs"
+  default_prompt: "Use $generate-task-description with a Jira key to draft its description from linked and supplied PR diffs."
+policy:
+  allow_implicit_invocation: false
