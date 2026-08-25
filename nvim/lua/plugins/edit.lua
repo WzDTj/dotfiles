@@ -62,12 +62,6 @@ return {
     end,
   },
 
-  -- AI completion
-  {
-    "github/copilot.vim",
-    lazy = false,
-  },
-
   -- Formatting
   {
     "stevearc/conform.nvim",
