@@ -57,7 +57,7 @@ Scoring result from repository scan:
 ## UNIQUE STYLES
 - Work session model: project-name tmux session + fixed pane layout + editor/git/agent split.
 - Branch naming fallback in `start-work.sh`: `<keyword>_dantong.jin_<YYYYMMDD>_`.
-- Shell modularity: feature-specific files (`nvm.zsh`, `java.zsh`, `android.zsh`) sourced from `.zshrc`.
+- Shell modularity: feature-specific files (`mise.zsh`, `java.zsh`, `android.zsh`) sourced from `.zshrc`.
 
 ## COMMANDS
 ```bash

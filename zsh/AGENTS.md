@@ -12,7 +12,7 @@ Shell bootstrap and environment modules loaded by `.zshrc`.
 | Root shell bootstrap | `zsh/.zshrc` | sources all module files |
 | Global aliases and proxy | `zsh/general.zsh` | includes `start-work` and `stop-work` aliases |
 | Git shortcuts | `zsh/git.zsh` | writes global git aliases on shell startup |
-| Runtime managers | `zsh/nvm.zsh`, `zsh/pnpm.zsh`, `zsh/bun.zsh`, `zsh/rvm.zsh` | PATH + completion setup |
+| Runtime managers | `zsh/mise.zsh`, `zsh/pnpm.zsh`, `zsh/bun.zsh` | PATH + completion setup |
 | Platform SDK setup | `zsh/android.zsh`, `zsh/java.zsh` | exports Android/JDK paths |
 
 ## CONVENTIONS
