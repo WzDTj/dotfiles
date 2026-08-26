@@ -15,7 +15,6 @@ Neovim config split into core options/keymaps plus lazy.nvim plugin specs.
 | LSP/completion stack | `nvim/lua/plugins/lsp.lua` | mason-lspconfig, nvim-cmp, treesitter |
 | Search/editor UX | `nvim/lua/plugins/editor.lua` | telescope + input method switch |
 | Visual layer | `nvim/lua/plugins/ui.lua` | nord, bufferline, lualine, gitsigns |
-| COC local behavior | `nvim/coc-settings.json` | format-on-save and eslint fix-on-save |
 
 ## CONVENTIONS
 - Plugin declarations are grouped by concern (`plugins/lsp.lua`, `plugins/editor.lua`, `plugins/ui.lua`).
@@ -28,5 +27,4 @@ Neovim config split into core options/keymaps plus lazy.nvim plugin specs.
 - Do not assume repo-level lint/format config exists; editor behavior here may differ from other contributors.
 
 ## NOTES
-- `coc-settings.json` keeps formatter/lint automation even though COC plugin block is currently commented in `plugins/lsp.lua`.
 - Treesitter update runs through plugin build hook (`:TSUpdate`).
