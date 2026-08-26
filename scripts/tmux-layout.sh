@@ -10,7 +10,6 @@ if tmux has-session -t "$session_name" 2>/dev/null; then
   :
 else
   tmux new-session -d -s "$session_name" -c "$PWD" -x "$(tput cols)" -y "$(tput lines)"
-  tmux new-window -d -c "$PWD" "codex"
 fi
 
 tmux set-option -t "$session_name" set-titles on 2>/dev/null || true

@@ -10,7 +10,6 @@ if tmux has-session -t "$session_name" 2>/dev/null; then
   :
 else
   tmux new-session -d -s "$session_name" -c "$PWD" -x "$(tput cols)" -y "$(tput lines)"
-  tmux new-window -d -c "$PWD" "codex"
   tmux new-window -d -c "$PWD"
 fi
 
