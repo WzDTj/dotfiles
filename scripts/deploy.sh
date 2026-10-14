@@ -44,7 +44,7 @@ Deploy dotfiles by creating symlinks from this repository to target locations.
 
 OPTIONS:
     --dry-run       Show what would be done without making changes
-    --force         Overwrite existing files and symlinks
+    --force         Rebuild all symlinks, replacing existing targets
     --backup        Backup existing files before replacing (adds .bak suffix)
     --help          Show this help message
 
@@ -119,7 +119,7 @@ backup_file() {
     # Find unique backup name
     while [[ -e "$backup" ]]; do
         backup="${target}.bak.${counter}"
-        ((counter++))
+        ((counter += 1))
     done
     
     if [[ "$DRY_RUN" == true ]]; then
@@ -129,7 +129,7 @@ backup_file() {
     
     if mv "$target" "$backup" 2>/dev/null; then
         log_detail "Backed up: $target → $backup"
-        ((BACKED_UP++))
+        ((BACKED_UP += 1))
         return 0
     else
         log_error "Failed to backup: $target"
@@ -147,20 +147,20 @@ handle_existing_target() {
         local current_link
         current_link="$(readlink "$target")"
         
-        if [[ "$current_link" == "$source" ]]; then
+        if [[ "$current_link" == "$source" && "$FORCE" == false ]]; then
             log_skip "Already linked: $target"
-            ((SKIPPED++))
+            ((SKIPPED += 1))
             return 2  # Special code: already correct
         fi
         
         # It's a symlink but points elsewhere
         if [[ "$FORCE" == true ]]; then
             if [[ "$DRY_RUN" == true ]]; then
-                log_dry_run "Would remove incorrect symlink: $target → $current_link"
+                log_dry_run "Would remove existing symlink: $target → $current_link"
                 return 0
             fi
             rm "$target"
-            log_detail "Removed incorrect symlink: $target"
+            log_detail "Removed existing symlink: $target"
             return 0
         elif [[ "$BACKUP" == true ]]; then
             backup_file "$target"
@@ -168,7 +168,7 @@ handle_existing_target() {
         else
             log_skip "Symlink exists (different target): $target → $current_link"
             log_detail "Use --force to replace or --backup to preserve"
-            ((SKIPPED++))
+            ((SKIPPED += 1))
             return 1
         fi
     fi
@@ -189,7 +189,7 @@ handle_existing_target() {
         else
             log_skip "File exists: $target"
             log_detail "Use --force to replace or --backup to preserve"
-            ((SKIPPED++))
+            ((SKIPPED += 1))
             return 1
         fi
     fi
@@ -207,7 +207,7 @@ create_symlink() {
     local target_dir
     target_dir="$(dirname "$target")"
     if ! ensure_dir "$target_dir"; then
-        ((ERRORS++))
+        ((ERRORS += 1))
         return 1
     fi
     
@@ -231,12 +231,12 @@ create_symlink() {
     if ln -s "$source" "$target" 2>/dev/null; then
         log_success "Linked: $description"
         log_detail "$target → $source"
-        ((CREATED++))
+        ((CREATED += 1))
         return 0
     else
         log_error "Failed to link: $description"
         log_detail "$target → $source"
-        ((ERRORS++))
+        ((ERRORS += 1))
         return 1
     fi
 }
@@ -249,7 +249,7 @@ deploy_file() {
     
     if [[ ! -e "$source" ]]; then
         log_error "Source not found: $source"
-        ((ERRORS++))
+        ((ERRORS += 1))
         return 1
     fi
     
@@ -264,7 +264,7 @@ deploy_directory() {
     
     if [[ ! -d "$source" ]]; then
         log_error "Source directory not found: $source"
-        ((ERRORS++))
+        ((ERRORS += 1))
         return 1
     fi
     
